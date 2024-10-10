@@ -1,0 +1,26 @@
+# version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: test
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      # seeding scripts
+      - ../deploy/mongodb/mongo-entrypoint:/docker-entrypoint-initdb.d
+      # named volumes
+      - ../deploy/mongodb/db:/data/db
+      - ../deploy/mongodb/mongoconfig:/data/configdb
+    networks:
+      - chat-app
+
+volumes:
+  mongo_data:
+
+networks:
+  chat-app:
+    driver: bridge
